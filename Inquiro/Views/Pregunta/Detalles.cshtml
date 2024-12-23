@@ -1,0 +1,70 @@
+﻿@model Inquiro.Models.Pregunta
+
+<h2>Detalles de la Pregunta</h2>
+
+<!-- Mensajes -->
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success">@TempData["Success"]</div>
+}
+
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger">@TempData["Error"]</div>
+}
+
+<!-- Mostrar pregunta -->
+<div class="card mb-4">
+    <div class="card-header">
+        <h3>@Model.Titulo</h3>
+    </div>
+    <div class="card-body">
+        <p>@Model.Descripcion</p>
+        <p><strong>Fecha:</strong> @Model.FechaCreacion.ToString("dd/MM/yyyy")</p>
+        <p><strong>Estado:</strong> @(Model.Cerrada ? "Cerrada" : "Abierta")</p>
+    </div>
+</div>
+
+<!-- Mostrar respuestas -->
+<h4>Respuestas:</h4>
+@if (Model.Respuestas != null && Model.Respuestas.Any())
+{
+    <ul class="list-group mb-3">
+        @foreach (var respuesta in Model.Respuestas)
+        {
+            <li class="list-group-item">
+                <strong>@respuesta.NombreUsuario:</strong> @respuesta.Contenido
+                <br />
+                <small>@respuesta.FechaCreacion.ToString("dd/MM/yyyy HH:mm")</small>
+            </li>
+        }
+    </ul>
+}
+else
+{
+    <p>No hay respuestas todavía.</p>
+}
+
+<!-- Formulario para agregar respuesta -->
+<!-- Solo muestra el formulario si está abierta -->
+@if (!Model.Cerrada)
+{
+    <h4>Agregar Respuesta:</h4>
+    <form asp-controller="Respuesta" asp-action="Agregar" method="post">
+        <input type="hidden" name="preguntaId" value="@Model.PreguntaID" />
+        <div class="form-group">
+            <textarea name="contenido" class="form-control" placeholder="Escribe tu respuesta aquí..." rows="3"></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary mt-2">Responder</button>
+    </form>
+}
+else
+{
+    <!-- Mensaje cuando la pregunta está cerrada -->
+    <div class="alert alert-warning mt-3">
+        Esta pregunta está cerrada y no acepta nuevas respuestas.
+    </div>
+}
+
+<!-- Botón para regresar -->
+<a asp-action="Index" class="btn btn-secondary mt-3">Volver al Listado</a>

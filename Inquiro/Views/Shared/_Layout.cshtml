@@ -1,0 +1,65 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Inquiro</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/Inquiro.styles.css" asp-append-version="true" />
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+            <!-- Logo -->
+            <a class="navbar-brand" asp-area="" asp-controller="Pregunta" asp-action="Index">Inquiro</a>
+
+            <!-- Botón de Inicio -->
+            <a class="nav-link" asp-area="" asp-controller="Pregunta" asp-action="Index">Inicio</a>
+
+            <!-- Menú desplegable -->
+            <div class="collapse navbar-collapse justify-content-end">
+                <ul class="navbar-nav">
+
+                    @if (Context.Session.GetInt32("UsuarioID") == null)
+                    {
+                        <!-- Botón de Registrarse -->
+                        <li class="nav-item">
+                            <a class="nav-link btn btn-primary text-white" asp-area="" asp-controller="Usuario" asp-action="Registrar">Registrarse</a>
+                        </li>
+                        <!-- Botón de Iniciar Sesión -->
+                        <li class="nav-item">
+                            <a class="nav-link btn btn-success text-white ms-2" asp-area="" asp-controller="Usuario" asp-action="Login">Iniciar Sesión</a>
+                        </li>
+                    }
+                    else
+                    {
+                        <!-- Botón de Cerrar Sesión -->
+                        <li class="nav-item">
+                            <form asp-controller="Usuario" asp-action="Logout" method="post" style="display:inline;">
+                                <button type="submit" class="btn btn-danger ms-2">Cerrar Sesión</button>
+                            </form>
+                        </li>
+                    }
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer class="border-top footer text-muted">
+        <div class="container">
+            &copy; 2024 - Inquiro
+        </div>
+    </footer>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

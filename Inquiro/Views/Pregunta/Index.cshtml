@@ -1,0 +1,87 @@
+﻿@model X.PagedList.IPagedList<Inquiro.Models.Pregunta>
+@using X.PagedList.Mvc.Core
+
+
+<h2>Listado de Preguntas</h2>
+
+<!-- Mensajes -->
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success">@TempData["Success"]</div>
+}
+
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger">@TempData["Error"]</div>
+}
+
+<!-- Tabla de preguntas -->
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Título</th>
+            <th>Descripción</th>
+            <th>Fecha</th>
+            <th>Estado</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var pregunta in Model)
+        {
+            <tr>
+                <td>@pregunta.Titulo</td>
+                <td>@pregunta.Descripcion</td>
+                <td>@pregunta.FechaCreacion.ToString("dd/MM/yyyy")</td>
+                <td>@(pregunta.Cerrada ? "Cerrada" : "Abierta")</td>
+            </tr>
+
+            <!-- Mostrar respuestas asociadas -->
+            <tr>
+                <td colspan="5">
+                    <h5>Respuestas:</h5>
+                    <ul class="list-group mb-3">
+                        @if (pregunta.Respuestas != null && pregunta.Respuestas.Any())
+                        {
+                            foreach (var respuesta in pregunta.Respuestas)
+                            {
+                                <li class="list-group-item">
+                                    <strong>@respuesta.NombreUsuario:</strong> @respuesta.Contenido
+                                    <br />
+                                    <small>@respuesta.FechaCreacion.ToString("dd/MM/yyyy HH:mm")</small>
+                                </li>
+                            }
+                        }
+                        else
+                        {
+                            <li class="list-group-item">No hay respuestas todavía.</li>
+                        }
+                    </ul>
+
+                    <!-- Botón para ver detalles (Siempre visible) -->
+                    <a asp-action="Detalles" asp-route-id="@pregunta.PreguntaID" class="btn btn-info btn-sm">Detalles</a>
+
+                    <!-- Botón para cerrar (Solo visible si es el propietario y está abierta) -->
+                        @if (!pregunta.Cerrada && pregunta.UsuarioID == Context.Session.GetInt32("UsuarioID"))
+                        {
+                        <form asp-action="Cerrar" method="post" style="display:inline;">
+                            <input type="hidden" name="id" value="@pregunta.PreguntaID" />
+                            <button type="submit" class="btn btn-warning btn-sm ml-2">Cerrar</button>
+                        </form>
+                        }
+                </td>
+                <td>
+                   
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<!-- Botón para agregar nueva pregunta -->
+<a asp-action="Crear" class="btn btn-primary">Nueva Pregunta</a>
+
+<!-- Controles de paginación -->
+<div class="pagination-container">
+    Página @(Model.PageNumber) de @(Model.PageCount)
+    @Html.PagedListPager(Model, page => Url.Action("Index", new { page }))
+</div>

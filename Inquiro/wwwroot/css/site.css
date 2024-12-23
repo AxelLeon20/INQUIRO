@@ -1,0 +1,60 @@
+html {
+  font-size: 14px;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  margin-bottom: 60px;
+}
+
+
+
+
+/*Diseño de la paginación*/
+
+.pagination-container {
+    margin-top: 20px;
+    text-align: center;
+}
+
+    .pagination-container ul.pagination {
+        display: inline-block;
+        padding: 0;
+        margin: 0;
+    }
+
+        .pagination-container ul.pagination li {
+            display: inline;
+            margin: 0 5px;
+        }
+
+            .pagination-container ul.pagination li a {
+                text-decoration: none;
+                padding: 8px 16px;
+                color: #007bff;
+                border: 1px solid #dee2e6;
+                border-radius: 5px;
+            }
+
+            .pagination-container ul.pagination li.active a {
+                background-color: #007bff;
+                color: white;
+            }
+
+            .pagination-container ul.pagination li.disabled a {
+                color: #6c757d;
+            }
