@@ -13,3 +13,5 @@ Donde modificaremos esta linea:
 Con el nombre de nuestro servidor el Usuario y la Contraseña.
 
 Podemos proceder a ejecutar el proyecto.
+
+Como adicional podemos ejecutar el archivo de Insert de Datos para visualizar una cantidad de datos en el proyecto.
